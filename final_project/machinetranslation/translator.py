@@ -1,4 +1,5 @@
-#import json
+"""IBM TRANSLATOR"""
+
 import os
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -17,29 +18,29 @@ language_translator = LanguageTranslatorV3(
 
 language_translator.set_service_url(url)
 
-def englishToFrench(englishText):
-    translation = language_translator.translate(
-        englishText,
-        model_id='en-fr').get_result()
-    trans_list = translation["translations"]
-    trans_dict = trans_list[0]
-    frenchText = trans_dict['translation']
-    return frenchText
-
-def frenchToEnglish(frenchText):
+def english_to_french(english_text):
+    """ Function To Translate English To French """
     while True:
         try:
-            translation = language_translator.translate(
-                frenchText, 
-                model_id='fr-en').get_result()
+            translation = language_translator.translate(english_text, model_id='en-fr').get_result()
             trans_list = translation["translations"]
             trans_dict = trans_list[0]
-            englishText = trans_dict['translation']
-            #print(json.dumps(translation, indent=2, ensure_ascii=False))
-            return englishText
-        except (ValueError):
-            print("A value is required")
-            break
+            french_text = trans_dict['translation']
+            return french_text
+        except ValueError:
+            return None
+
+def french_to_english(french_text):
+    '''  Function To Translate FrenchToEnglish '''
+    while True:
+        try:
+            translation = language_translator.translate(french_text, model_id='fr-en').get_result()
+            trans_list = translation["translations"]
+            trans_dict = trans_list[0]
+            english_text = trans_dict['translation']
+            return english_text
+        except ValueError:
+            return None
 
 #print(englishToFrench('Hello'))
 #print(frenchToEnglish('Bonjour'))
